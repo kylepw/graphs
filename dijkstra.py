@@ -1,4 +1,4 @@
-""" Implement Dijkstra's method to find shortest path between
+""" Implement Dijkstra's algorithm to find shortest path between
     two nodes in graph.
 """
 import unittest
@@ -15,14 +15,18 @@ def shortest_path(node1, node2, graph, visited=None):
         for adj_node in graph[node]['adjacent']:
             if adj_node in visited:
                 continue
-            if graph[adj_node]['weight'] > graph[node]['weight'] + graph[node]['adjacent'][adj_node]:
-                graph[adj_node]['weight'] = graph[node]['weight'] + graph[node]['adjacent'][adj_node]
+            if (
+                graph[adj_node]['weight']
+                > graph[node]['weight'] + graph[node]['adjacent'][adj_node]
+            ):
+                graph[adj_node]['weight'] = (
+                    graph[node]['weight'] + graph[node]['adjacent'][adj_node]
+                )
         visited.append(node)
 
     for node in graph:
         print(node, graph[node]['weight'])
     return graph[node2]['weight']
-
 
 
 class TestShortestPath(unittest.TestCase):
@@ -35,10 +39,11 @@ class TestShortestPath(unittest.TestCase):
             'C': {'weight': INFINITY, 'adjacent': {'A': 4, 'B': 1, 'E': 3}},
             'D': {'weight': INFINITY, 'adjacent': {'B': 4, 'E': 3, 'F': 2}},
             'E': {'weight': INFINITY, 'adjacent': {'B': 2, 'C': 3, 'D': 3, 'F': 2}},
-            'F': {'weight': INFINITY, 'adjacent': {'D': 2, 'E': 2}}
+            'F': {'weight': INFINITY, 'adjacent': {'D': 2, 'E': 2}},
         }
+
     def test_shortest_path(self):
         self.assertEqual(shortest_path('A', 'F', self.graph), 6)
-        #self.assertEqual(shortest_path('A', 'E', self.graph), 4)
-        #self.assertEqual(shortest_path('C', 'D', self.graph), 5)
-        #self.assertEqual(shortest_path('F', 'B', self.graph), 4)
+        # self.assertEqual(shortest_path('A', 'E', self.graph), 4)
+        # self.assertEqual(shortest_path('C', 'D', self.graph), 5)
+        # self.assertEqual(shortest_path('F', 'B', self.graph), 4)

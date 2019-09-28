@@ -12,6 +12,7 @@ def dfs_visited_iter(node, graph):
         stack.extend(graph[current])
     return visited
 
+
 def dfs_visited_re(node, graph, visited=[]):
     """DFS: Return visited nodes via recursion"""
     for child in graph[node]:
@@ -19,6 +20,7 @@ def dfs_visited_re(node, graph, visited=[]):
             visited.append(child)
         dfs_visited_re(child, graph, visited)
     return visited
+
 
 def bfs_visited(node, graph):
     """BFS: Return visited nodes"""
@@ -28,9 +30,12 @@ def bfs_visited(node, graph):
     while queue:
         current = queue.pop()
         # Enqueue unvisited neighbors
-        queue[0:0] = [neighbor for neighbor in graph[current] if neighbor not in visited]
+        queue[0:0] = [
+            neighbor for neighbor in graph[current] if neighbor not in visited
+        ]
         visited.append(current)
     return visited
+
 
 def is_path(node1, node2, graph, method):
     """Return True if path between `node1` and `node2`"""
@@ -49,7 +54,7 @@ class TestIsPath(unittest.TestCase):
         }
         self.graph2 = {
             'A': ['B', 'C', 'E'],
-            'B': ['D',],
+            'B': ['D'],
             'C': [],
             'D': ['G'],
             'E': [],
@@ -76,6 +81,7 @@ class TestShortestPath(unittest.TestCase):
 
     def test_shortest_path(self):
         pass
+
 
 if __name__ == '__main__':
     unittest.main()
