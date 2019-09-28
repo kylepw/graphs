@@ -24,8 +24,6 @@ def shortest_path(node1, node2, graph, visited=None):
                 )
         visited.append(node)
 
-    for node in graph:
-        print(node, graph[node]['weight'])
     return graph[node2]['weight']
 
 
@@ -44,6 +42,4 @@ class TestShortestPath(unittest.TestCase):
 
     def test_shortest_path(self):
         self.assertEqual(shortest_path('A', 'F', self.graph), 6)
-        # self.assertEqual(shortest_path('A', 'E', self.graph), 4)
-        # self.assertEqual(shortest_path('C', 'D', self.graph), 5)
-        # self.assertEqual(shortest_path('F', 'B', self.graph), 4)
+        self.assertEqual(shortest_path('A', 'E', self.graph), 4)
