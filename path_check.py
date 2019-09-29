@@ -75,13 +75,5 @@ class TestIsPath(unittest.TestCase):
         self.assertTrue(is_path('A', 'C', self.graph2, bfs_visited))
 
 
-class TestShortestPath(unittest.TestCase):
-    def setUp(self):
-        pass
-
-    def test_shortest_path(self):
-        pass
-
-
 if __name__ == '__main__':
     unittest.main()
