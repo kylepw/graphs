@@ -144,13 +144,10 @@ class Graph(object):
         """
         ret_list = [start_node.value]
         start_node.visited = True
-        for edge in start_node.edges:
-            nodes = []
-            for vals in [e for e in self.get_edge_list()if e[0] == edge.value]:
-                nodes.extend([self.find_node(vals[1]), self.find_node(vals[2])])
-            for node in nodes:
-                if not node.visited:
-                    ret_list.extend(self.dfs_helper(node))
+        edges_out = [e for e in start_node.edges if e.node_to.value != start_node.value]
+        for edge in edges_out:
+            if not edge.node_to.visited:
+                ret_list.extend(self.dfs_helper(edge.node_to))
         return ret_list
 
     def dfs(self, start_node_num):
@@ -161,7 +158,24 @@ class Graph(object):
         RETURN: a list of the node values (integers)."""
         self._clear_visited()
         start_node = self.find_node(start_node_num)
-        return self.dfs_helper(start_node)
+        return self.dfs_helper_stack(start_node)
+        #return self.dfs_helper(start_node)
+
+    def dfs_helper_stack(self, start_node):
+        """Stack implementation of DFS."""
+        ret_list = []
+        stack = [start_node]
+
+        while stack:
+            node = stack.pop()
+            node.visited = True
+            if node.value not in ret_list:
+                ret_list.append(node.value)
+            edges_out = [e for e in node.edges if e.node_to.value != node.value]
+            for edge in edges_out:
+                if not edge.node_to.visited:
+                    stack.append(edge.node_to)
+        return ret_list
 
     def dfs_names(self, start_node_num):
         """Return the results of dfs with numbers converted to names."""
@@ -176,23 +190,22 @@ class Graph(object):
         RETURN: a list of the node values (integers)."""
         node = self.find_node(start_node_num)
         self._clear_visited()
-        ret_list = [node.value]
+        ret_list = []
+        # Your code here
+        queue = [node]
         node.visited = True
-        q = deque()
-        q.appendleft(node)
-
-        while q:
-            current = q.pop()
-            if not current.visited:
-                ret_list.append(current.value)
-                current.visited = True
-            for edge in current.edges:
-                for vals in [e for e in self.get_edge_list() if e[0] == edge.value]:
-                    if not self.find_node(vals[1]).visited:
-                        q.appendleft(self.find_node(vals[1]))
-                    if not self.find_node(vals[2]).visited:
-                        q.appendleft(self.find_node(vals[2]))
-
+        def enqueue(n, q=queue):
+            n.visited = True
+            q.append(n)
+        def unvisited_outgoing_edge(n, e):
+            return ((e.node_from.value == n.value) and
+                    (not e.node_to.visited))
+        while queue:
+            node = queue.pop(0)
+            ret_list.append(node.value)
+            for e in node.edges:
+                if unvisited_outgoing_edge(node, e):
+                    enqueue(e.node_to)
         return ret_list
 
     def bfs_names(self, start_node_num):
